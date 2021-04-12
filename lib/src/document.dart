@@ -38,7 +38,7 @@ class PDFDocument {
   /// [CacheManager cacheManager] to provide configuration for 
   /// cache management
   static Future<PDFDocument> fromURL(String url,
-      {Map<String, String> headers, CacheManager cacheManager}) async {
+      {Map<String, String> headers, BaseCacheManager cacheManager}) async {
     // Download into cache
     File f = await (cacheManager ?? DefaultCacheManager())
         .getSingleFile(url, headers: headers);
@@ -114,7 +114,7 @@ class PDFDocument {
     final double panLimit,
   }) async {
     int countvar = 1;
-    await Future.forEach<int>(List(count), (i) async {
+    await Future.forEach<int>([], (i) async {
       final data = await _channel.invokeMethod(
           'getPage', {'filePath': _filePath, 'pageNumber': countvar});
       _pages.add(PDFPage(
@@ -133,7 +133,7 @@ class PDFDocument {
 
   // Stream all pages
   Stream<PDFPage> getAll({final Function(double) onZoomChanged}) {
-    return Future.forEach<PDFPage>(List(count), (i) async {
+    return Future.forEach<PDFPage>([], (i) async {
       print(i);
       final data = await _channel
           .invokeMethod('getPage', {'filePath': _filePath, 'pageNumber': i});
